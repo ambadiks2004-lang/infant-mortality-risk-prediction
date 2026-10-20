@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Sign in · InfantCare AI{% endblock %}
+{% block auth_content %}
+<div class="login-layout">
+  <section class="login-art">
+    <a class="brand brand-light" href="#"><span class="brand-mark">✦</span><span>InfantCare<span class="brand-ai"> AI</span><small>RISK PREDICTION</small></span></a>
+    <div class="art-content"><div class="art-kicker">CARE STARTS WITH INSIGHT</div><h1>Every little life<br>deserves a <em>strong start.</em></h1><p>A thoughtful workspace for organizing maternal and infant records and exploring machine-learning risk predictions.</p><div class="art-orbit"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit-center">✦</div><span class="orbit-dot dot-a"></span><span class="orbit-dot dot-b"></span><span class="orbit-dot dot-c"></span></div></div>
+    <div class="art-footer">A research prototype for healthcare data workflows</div>
+  </section>
+  <section class="login-panel"><div class="login-card"><div class="mini-icon">✦</div><span class="eyebrow">WELCOME BACK</span><h2>Sign in to your workspace</h2><p class="muted">Use your doctor account to continue.</p>
+    <form method="post" class="form-stack">{% csrf_token %}
+      {% if form.non_field_errors %}<div class="form-error">{{ form.non_field_errors }}</div>{% endif %}
+      <label for="{{ form.username.id_for_label }}">Username</label>{{ form.username }}
+      {% for error in form.username.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+      <label for="{{ form.password.id_for_label }}">Password</label>{{ form.password }}
+      {% for error in form.password.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+      <input type="hidden" name="next" value="{{ next }}">
+      <button class="btn btn-primary btn-full" type="submit">Sign in <span>→</span></button>
+    </form><div class="login-help">Are you a doctor and new here? <a class="auth-link" href="{% url 'doctor_register' %}">Create a doctor account</a>.<br><br>Administrator accounts are created separately by the project administrator.</div>
+  </div><div class="login-disclaimer">Protected access · Local SQLite storage</div></section>
+</div>
+<script>
+document.querySelectorAll('input').forEach(el => { el.classList.add('form-control'); if(el.name==='username') el.setAttribute('placeholder','Enter your username'); if(el.name==='password') el.setAttribute('placeholder','Enter your password'); });
+</script>
+{% endblock %}

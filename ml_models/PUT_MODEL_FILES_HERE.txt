@@ -1,0 +1,1 @@
+Copy xgboost_infant_mortality.pkl and xgb_preprocessing.pkl into this folder.

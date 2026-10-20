@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Infant records · InfantCare AI{% endblock %}
+{% block page_heading %}Infant records{% endblock %}
+{% block content %}
+<div class="list-toolbar"><div><h2>Infant records</h2><p>Birth details linked to registered mothers.</p></div><a class="btn btn-primary" href="{% url 'infant_create' %}">＋ Add infant</a></div>
+<div class="table-card">{% if infants %}<div class="table-scroll"><table><thead><tr><th>INFANT ID</th><th>MOTHER</th><th>SEX</th><th>GESTATIONAL AGE</th><th>BIRTH WEIGHT</th><th>APGAR 5</th><th>ACTION</th></tr></thead><tbody>{% for i in infants %}<tr><td><span class="id-chip">#{{ i.infant_id }}</span></td><td>{{ i.mother.mother_name }} <small class="muted">(#{{ i.mother_id }})</small></td><td>{{ i.get_infant_sex_display }}</td><td>{{ i.gestational_age }} weeks</td><td>{{ i.birth_weight }} g</td><td>{{ i.apgar5 }}</td><td><a class="table-action" href="{% url 'predict' %}?infant_id={{ i.infant_id }}">Predict →</a></td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state"><span>♧</span><h4>No infant records</h4><p>Register an infant after adding the mother record.</p><a class="btn btn-primary" href="{% url 'infant_create' %}">Add first infant</a></div>{% endif %}</div>
+{% endblock %}

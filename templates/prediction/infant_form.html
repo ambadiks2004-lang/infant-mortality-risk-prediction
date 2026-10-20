@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Add infant · InfantCare AI{% endblock %}
+{% block page_heading %}Register infant{% endblock %}
+{% block content %}
+<div class="page-intro"><a class="back-link" href="{% url 'infant_list' %}">← Infant records</a><h2>Birth information</h2><p>Enter the infant's birth details and select the mother already registered in the database.</p></div>
+<form method="post" class="form-card">{% csrf_token %}
+  {% if form.non_field_errors %}<div class="form-error">{{ form.non_field_errors }}</div>{% endif %}
+  <div class="form-section-title"><span class="section-number">02</span><div><h3>Infant details</h3><p>Link this infant to the correct maternal record.</p></div></div>
+  <div class="form-grid">
+  {% for field in form %}<div class="field-wrap"><label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}<span class="required">*</span>{% endif %}</label>{{ field }}{% if field.help_text %}<small class="field-help">{{ field.help_text }}</small>{% endif %}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>{% endfor %}
+  </div>
+  <div class="form-actions"><a class="btn btn-light" href="{% url 'infant_list' %}">Cancel</a><button class="btn btn-primary" type="submit">Save infant record <span>→</span></button></div>
+</form>
+{% endblock %}

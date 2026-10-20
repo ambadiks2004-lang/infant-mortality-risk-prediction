@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Doctor registration · InfantCare AI{% endblock %}
+{% block auth_content %}
+<div class="login-layout">
+  <section class="login-art">
+    <a class="brand brand-light" href="{% url 'login' %}"><span class="brand-mark">✦</span><span>InfantCare<span class="brand-ai"> AI</span><small>RISK PREDICTION</small></span></a>
+    <div class="art-content"><div class="art-kicker">JOIN YOUR CARE WORKSPACE</div><h1>Better records.<br><em>Thoughtful insights.</em></h1><p>Create a doctor account to manage maternal and infant records and access the research prediction workflow.</p><div class="art-orbit"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit-center">✦</div><span class="orbit-dot dot-a"></span><span class="orbit-dot dot-b"></span><span class="orbit-dot dot-c"></span></div></div>
+    <div class="art-footer">Doctor access · Academic research prototype</div>
+  </section>
+  <section class="login-panel"><div class="login-card register-card"><div class="mini-icon">＋</div><span class="eyebrow">DOCTOR REGISTRATION</span><h2>Create your account</h2><p class="muted">Complete the details below to get started.</p>
+    <form method="post" class="form-stack">{% csrf_token %}
+      {% if form.non_field_errors %}<div class="form-error">{{ form.non_field_errors }}</div>{% endif %}
+      {% for field in form %}<label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<small class="field-help">{{ field.help_text|safe }}</small>{% endif %}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}{% endfor %}
+      <button class="btn btn-primary btn-full" type="submit">Create doctor account <span>→</span></button>
+    </form><div class="login-help">Already registered? <a class="auth-link" href="{% url 'login' %}">Sign in</a>.<br>Doctor accounts cannot access the Django admin site.</div>
+  </div><div class="login-disclaimer">Protected access · Local SQLite storage</div></section>
+</div>
+{% endblock %}
