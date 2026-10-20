@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Risk prediction · InfantCare AI{% endblock %}
+{% block page_heading %}Risk prediction{% endblock %}
+{% block content %}
+<div class="page-intro"><span class="eyebrow">MODEL-ASSISTED REVIEW</span><h2>Generate an infant risk estimate</h2><p>Enter the infant ID. The system retrieves the linked maternal and birth details from SQLite and passes the prepared features to the saved XGBoost model.</p></div>
+<div class="prediction-layout">
+  <section class="lookup-card"><div class="lookup-icon">⌕</div><span class="eyebrow">FIND AN INFANT</span><h3>Look up by infant ID</h3><p class="muted">The infant must already be registered and linked to a mother.</p>
+    <form method="post" class="lookup-form">{% csrf_token %}<label for="infant_id">Infant ID</label><div class="lookup-input"><span>#</span><input id="infant_id" name="infant_id" type="number" min="1" required value="{{ infant_id }}" placeholder="e.g. 1"></div><button class="btn btn-primary btn-full" type="submit">Generate prediction <span>→</span></button></form>
+    <div class="lookup-foot"><span>✓</span> Existing database details are used; no re-entry required.</div>
+  </section>
+  <section class="result-panel">
+  {% if result %}
+    <div class="result-top"><span class="eyebrow">PREDICTION GENERATED</span><span class="result-date">{{ result.record.prediction_date|date:"d M Y · H:i" }}</span></div>
+    <div class="result-icon {% if result.is_high %}high{% else %}low{% endif %}">{% if result.is_high %}↑{% else %}✓{% endif %}</div>
+    <span class="risk-badge {% if result.is_high %}risk-high{% else %}risk-low{% endif %}">{{ result.label }}</span>
+    <!-- <h2>{% if result.is_high %}Higher model-estimated risk{% else %}Lower model-estimated risk{% endif %}</h2> -->
+    <p class="muted">Infant #{{ infant.infant_id }} · {{ infant.mother.mother_name }}</p>
+    <!-- <div class="probability-box"><div class="probability-head"><span>Model output for class 1</span><strong>{{ result.probability_percent }}%</strong></div><div class="progress-track"><div class="progress-fill {% if result.is_high %}fill-high{% endif %}" style="width:{{ result.probability_percent }}%"></div></div><small>Threshold used by this prototype: 50%</small></div> -->
+    <div class="result-meta"><div><span>Gestational age</span><strong>{{ infant.gestational_age }} weeks</strong></div><div><span>Birth weight</span><strong>{{ infant.birth_weight }} g</strong></div><div><span>5-minute Apgar</span><strong>{{ infant.apgar5 }}</strong></div><div><span>Prediction ID</span><strong>#{{ result.record.prediction_id }}</strong></div></div>
+    <a class="btn btn-light btn-full" href="{% url 'prediction_history' %}">View prediction history →</a>
+  {% else %}
+    <div class="result-placeholder"><div class="placeholder-art"><span>✦</span><i></i><b></b></div><span class="eyebrow">YOUR RESULT APPEARS HERE</span><h3>Ready when you are</h3><p>Enter an existing infant ID to retrieve records and run the saved model.</p><div class="placeholder-steps"><span><b>1</b> Find infant</span><span><b>2</b> Prepare features</span><span><b>3</b> Generate result</span></div></div>
+  {% endif %}
+  </section>
+</div>
+<div class="notice"><span class="notice-icon">i</span><p><strong>Important:</strong> The displayed value is the model's output, not a clinically calibrated probability. This academic prototype is not a diagnostic tool and must not be used to make medical decisions.</p></div>
+{% endblock %}
