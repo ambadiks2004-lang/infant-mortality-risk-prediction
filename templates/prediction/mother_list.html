@@ -2,6 +2,6 @@
 {% block title %}Mother records · InfantCare AI{% endblock %}
 {% block page_heading %}Mother records{% endblock %}
 {% block content %}
-<div class="list-toolbar"><div><h2>Maternal records</h2><p>Records entered during antenatal checkups.</p></div><a class="btn btn-primary" href="{% url 'mother_create' %}">＋ Add mother</a></div>
+<div class="list-toolbar"><div><h2>Maternal records</h2><p>Records entered during antenatal checkups.</p></div>{% if user.is_staff == False %}<a class="btn btn-primary" href="{% url 'mother_create' %}">＋ Add mother</a>{% endif %}</div>
 <div class="table-card">{% if mothers %}<div class="table-scroll"><table><thead><tr><th>MOTHER ID</th><th>NAME</th><th>AGE</th><th>PRENATAL VISITS</th><th>BMI</th><th>ADDED</th></tr></thead><tbody>{% for m in mothers %}<tr><td><span class="id-chip">#{{ m.mother_id }}</span></td><td><strong>{{ m.mother_name }}</strong></td><td>{{ m.mother_age }}</td><td>{{ m.prenatal_visits }}</td><td>{{ m.bmi|default:"Not entered" }}</td><td>{{ m.created_at|date:"d M Y" }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state"><span>♡</span><h4>No mother records</h4><p>Add a maternal record before registering an infant.</p><a class="btn btn-primary" href="{% url 'mother_create' %}">Add first mother</a></div>{% endif %}</div>
 {% endblock %}
